@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Logging and log analysis - AERO internal documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Logging and log analysis";
+    var mkdocs_page_input_path = "dev/log_dev.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> AERO internal documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Basic Setup</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../ref/wiring_ref/">Wiring quickstart</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">PX4 Reference Info</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../ref/airframe_ref/">Vehicles and Airframes</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ref/autopilot_ref/">Autopilot Hardware</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ref/sensor_ref/">Sensors</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Software Dev</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Logging and log analysis</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#logging-and-analyzing-flight-logs">Logging and analyzing flight logs</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#log-collection">Log Collection</a></li>
+        
+            <li><a class="toctree-l4" href="#log-analysis">Log Analysis</a></li>
+        
+            <li><a class="toctree-l4" href="#deep-dive">Deep Dive</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../mavlink_dev/">Mavlink Development</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">AERO internal documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Software Dev &raquo;</li>
+        
+      
+    
+    <li>Logging and log analysis</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="logging-and-analyzing-flight-logs">Logging and analyzing flight logs</h1>
+<p>Logging is the process of collecting flight data or autopilot system data in a log file while the vehicle was airborne. This is the same as what a black box / flight recorder does on an airliner.</p>
+<p>Flight logs are useful for assessing vehicle performance or tuning PIDs. More importantly, logs allow developers to diagnose a specific issue.</p>
+<h2 id="log-collection">Log Collection</h2>
+<p>Logging automatically starts when the vehicle arms, and stopped when it disarms. A new log file is created for each arming session on the SD card. The log file is a binary data file with extension <strong>.ulg</strong></p>
+<p>The uORB topics to be logged can be manually defined using a file on the SD card. Create a file <code>etc/logging/logger_topics.txt</code> (Also reate the <code>etc/logging</code> directory for first time users) and list the required uORB topics in it. Use the format as follows</p>
+<pre><code>&lt;topic_name&gt;, &lt;interval&gt;
+</code></pre>
+
+<p>Specify logging rate for a topic by specify the <em>interval between two logged messages</em> in milliseconds, in <code>&lt;interval&gt;</code>.</p>
+<p>If custom uORB topics have been created, specifying it in <code>logger_topics.txt</code> is the best way to ensure the custom flight data is logged. Otherwise, firmware files have to be changed. See <strong>Deep Dive</strong> below for details</p>
+<h2 id="log-analysis">Log Analysis</h2>
+<p>PX4’s default log analysis tool is Flight Review, an online utility. It has a set of tools to visualize the flight path, and does a good job recreating the flight experience.</p>
+<p><img alt="Airframe Screen" src="/img/3D_view.png" /></p>
+<p>Flight Review graphs the following flight data</p>
+<ul>
+<li>Attitude Estimates<ul>
+<li>Barometric Altitude, GPS Altitude, Fused Altitude Estimation, Thrust</li>
+</ul>
+</li>
+<li>Roll / Pitch / Yaw angle<ul>
+<li>Estimate, Setpoint</li>
+</ul>
+</li>
+<li>Roll / Pitch / Yaw angular rate<ul>
+<li>Estimate, Setpoint</li>
+</ul>
+</li>
+<li>Local Position Estimation<ul>
+<li>X, Y, Z (coordinates)</li>
+</ul>
+</li>
+<li>Velocity Estimation<ul>
+<li>X, Y, Z (direction)</li>
+</ul>
+</li>
+<li>Manual Control Input<ul>
+<li>Channels 1-8</li>
+</ul>
+</li>
+<li>Actuator Control Command<ul>
+<li>Roll, Pitch, Yaw, Thrust</li>
+</ul>
+</li>
+<li>Actuator Control Output<ul>
+<li>Motor 1,2,3,4</li>
+</ul>
+</li>
+<li>Raw acceleration, i.e. Acclerometer measurements</li>
+<li>Raw angular speed, i.e. Gyro measurements</li>
+<li>Raw magnetic field strength, i.e. Compass measurements)</li>
+<li><em>And some advanced graphs</em></li>
+</ul>
+<h3 id="log-parsing-with-pyulog">Log parsing with <em>pyulog</em></h3>
+<p>pyulog is a python package that can parse ulog files and convert or display them. It enables third-party scripts or utilities, such as MATLAB to process ulog files.</p>
+<p>Install pyulog with </p>
+<pre><code>pip install pyulog
+</code></pre>
+
+<p>Detailed instructions on using pyulog can be found on its github page. The following are the commands in the package</p>
+<ul>
+<li>Display information of file: <code>ulog_info</code></li>
+<li>Extract messaged from file: <code>ulog_messages</code></li>
+<li>Extracting parameters from file: <code>ulog_params</code></li>
+<li>Convert ulog to csv: <code>ulog2csv</code></li>
+<li>Convert ulog to kml: <code>ulog2kml</code></li>
+</ul>
+<h2 id="deep-dive">Deep Dive</h2>
+<p>The PX4 firmware has two modules for logging flight data. </p>
+<ul>
+<li><strong>sdlog2</strong>: This module is obsolete and it writes logs to .px4log files. Location: <code>src/modules/sdlog2</code></li>
+<li><strong>logger</strong>: This module is modern and it writes logs to .ulog files. Location: <code>src/modules/logger</code></li>
+</ul>
+<p><strong>sdlog2</strong> hard codes log messages and their data types into the module’s source code.
+On the other hand, <strong>logger</strong> collects flight data on a per topic basis, and automatically labels and declares log messages. </p>
+<p>One important consequence of this change is that while <strong>sdlog2</strong> must collect all flight data at the same rate, <strong>Logger</strong> can collect flight data from different uORB topics at different rates. For example, IMU data which is sampled at 32kHz may be logged at a much higher rate than GPS position data, which is sampled at 10Hz.</p>
+<h3 id="logger-code">Logger code</h3>
+<p>To add, remove or customize log messages in source code, only <code>logger.cpp</code> needs to edited in one location as shown below</p>
+<pre><code class="c++">void Logger::add_default_topics()
+{
+  // Note: try to avoid setting the interval where possible
+  add_topic(&quot;actuator_controls_0&quot;, 100);
+  /*...*/
+  add_topic(&quot;debug&quot;, 100);  // This is a custom topic
+  /*...*/
+}
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../mavlink_dev/" class="btn btn-neutral float-right" title="Mavlink Development">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../../ref/sensor_ref/" class="btn btn-neutral" title="Sensors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../ref/sensor_ref/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../mavlink_dev/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

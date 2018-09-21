@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Autopilot Hardware - AERO internal documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Autopilot Hardware";
+    var mkdocs_page_input_path = "ref/autopilot_ref.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> AERO internal documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Basic Setup</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../wiring_ref/">Wiring quickstart</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">PX4 Reference Info</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../airframe_ref/">Vehicles and Airframes</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Autopilot Hardware</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#autopilot-hardware-reference">Autopilot Hardware Reference</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#general-purpose-autopilots">General purpose autopilots</a></li>
+        
+            <li><a class="toctree-l4" href="#miniaturized-autopilots">Miniaturized Autopilots</a></li>
+        
+            <li><a class="toctree-l4" href="#derivatives">Derivatives</a></li>
+        
+            <li><a class="toctree-l4" href="#linux-based">Linux Based</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../sensor_ref/">Sensors</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Software Dev</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../dev/log_dev/">Logging and log analysis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../dev/mavlink_dev/">Mavlink Development</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">AERO internal documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>PX4 Reference Info &raquo;</li>
+        
+      
+    
+    <li>Autopilot Hardware</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="autopilot-hardware-reference">Autopilot Hardware Reference</h1>
+<p>Pixhawk series autopilots all run PX4 or ArduPilot firmware, but the hardware differ in interfaces and form factor. This section summarizes the available autopilot hardware and groups them into three categories.</p>
+<h2 id="general-purpose-autopilots">General purpose autopilots</h2>
+<p>These are full-feature autopilots with a full set of interfaces, i.e. 8+6 Main and Aux outputs, 5 serial ports, analog ports. They are suitable for a wide range of airframes and configurations. </p>
+<p>They can further be categorized by their intended applications.</p>
+<h3 id="industrial-commercial">Industrial / Commercial</h3>
+<p>These are well tested and widely available at a reasonable price. They are optimized for easy deployment on industrial or professional UAVs.</p>
+<ul>
+<li>Pixhawk</li>
+<li>Pixhawk 2.1</li>
+<li>mRo X2.1</li>
+</ul>
+<p><img alt="Pixhawk I" src="/img/PixhawkI.png" /></p>
+<h3 id="academic-research">Academic / Research</h3>
+<p>These are computationally powerful and feature-rich, and accordingly more expensive. They are good platforms for developing bleeding-edge capabilities</p>
+<ul>
+<li>Pixhawk 3 Pro</li>
+<li>Pixhawk 4</li>
+</ul>
+<p><img alt="Pixhawk IV" src="/img/PixhawkIV.png" /></p>
+<h2 id="miniaturized-autopilots">Miniaturized Autopilots</h2>
+<p>These are small and lightweight autopilots with a reduced set of  interfaces. They are suitable for space-constrained configurations, e.g. microquads and racers.</p>
+<ul>
+<li>Pixhawk Mini</li>
+<li>Pixracer</li>
+</ul>
+<p><img alt="Pixracer" src="/img/Pixracer.png" /></p>
+<h2 id="derivatives">Derivatives</h2>
+<p>These are derivatives of one of the above designs. They are less well tested, but retain the set of features and capabilities of their parent design.</p>
+<ul>
+<li>Dropix</li>
+<li>Pixhack</li>
+<li>MindPX</li>
+</ul>
+<h2 id="linux-based">Linux Based</h2>
+<p>These consist of a sensor / processor shield that interfaces with a Raspberry Pi single-board computer. They are very computationally powerful, and lends itself well to customized applications, APIs, or complicated tasks such as computer vision. </p>
+<p><img alt="Navio" src="/img/Navio.png" /></p>
+<p><em>Warning: Linux based autopilots are considerably more difficult to setup. Consider setting up a Linux based autopilot as configuring both a Raspberry Pi AND a traditional autopilot.</em></p>
+<p>Warning: Exotic designs are excluded from this list. It is the end-user’s responsibility to find them and verify their capabilities.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../sensor_ref/" class="btn btn-neutral float-right" title="Sensors">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../airframe_ref/" class="btn btn-neutral" title="Vehicles and Airframes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../airframe_ref/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../sensor_ref/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

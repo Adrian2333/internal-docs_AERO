@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Mavlink Development - AERO internal documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Mavlink Development";
+    var mkdocs_page_input_path = "dev/mavlink_dev.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> AERO internal documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Basic Setup</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../ref/wiring_ref/">Wiring quickstart</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">PX4 Reference Info</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../ref/airframe_ref/">Vehicles and Airframes</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ref/autopilot_ref/">Autopilot Hardware</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../ref/sensor_ref/">Sensors</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Software Dev</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../log_dev/">Logging and log analysis</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Mavlink Development</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#mavlink-development">MAVLink Development</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#create-custom-mavlink-message">Create custom mavlink message</a></li>
+        
+            <li><a class="toctree-l4" href="#sending-custom-mavlink-messages">Sending custom MAVLink messages</a></li>
+        
+            <li><a class="toctree-l4" href="#enabling-the-mavlink-stream">Enabling the MAVLink stream</a></li>
+        
+            <li><a class="toctree-l4" href="#reading-the-mavlink-stream">Reading the MAVLink Stream</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">AERO internal documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Software Dev &raquo;</li>
+        
+      
+    
+    <li>Mavlink Development</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="mavlink-development">MAVLink Development</h1>
+<p>The objective of MAVLink messaging is to send data to QGroundControl GCS for inspection/visualization.</p>
+<p>Internally, flight data is handled as uORB messages. In our case, this message is <code>pot_angle</code> as defined in <code>msg/pot_angle.msg</code>.</p>
+<h2 id="create-custom-mavlink-message">Create custom mavlink message</h2>
+<p>For MAVLink communication, a corresponding MAVLink message <code>pot_angle</code> should be created. This message is defined in an .xml file in <code>mavlink/include/mavlink/v2.0/message_definitions</code> and then converted to C/C++ code.</p>
+<p><em>MAVLink is a submodule in PX4 firmware! Use</em> <code>git submodule update --init --recursive</code> <em>to fetch it.</em></p>
+<p><em>Unfortunately, this means the edited MAVLink library and included headers is not pushed to the Firmware repository. Please follow the direction below to generate MAVLink headers</em></p>
+<p><code>custom_msgs.xml</code> is the .xml message definition for <code>pot_angle</code> shown below</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;mavlink&gt;
+  &lt;include&gt;common.xml&lt;/include&gt;
+  &lt;include&gt;ardupilotmega.xml&lt;/include&gt;
+  &lt;version&gt;3&lt;/version&gt;
+  &lt;messages&gt;
+    &lt;message id=&quot;190&quot; name=&quot;POT_ANGLE&quot;&gt;
+      &lt;description&gt;Potentiometer readings&lt;/description&gt;
+      &lt;field type=&quot;uint64_t&quot; name=&quot;error_count&quot;&gt;Number of errors detected by driver&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_ADCraw&quot;&gt;Raw ADC reading&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_angle_deg_raw&quot; units=&quot;deg&quot;&gt;unfiltered angle&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_angle_deg&quot; units=&quot;deg&quot;&gt;filtered angle in degrees&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_angle_rad&quot; units=&quot;rad&quot;&gt;filtered angle in radians&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_rate_deg_raw&quot; units=&quot;deg&quot;&gt;unfiltered angle rate in degrees&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_rate_deg&quot; units=&quot;deg&quot;&gt; filtered rate in degrees&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_rate_rad&quot; units=&quot;rad&quot;&gt; filtered rate in radians&lt;/field&gt;
+      &lt;field type=&quot;float&quot; name=&quot;pot_dt&quot;&gt;&lt;/field&gt;
+    &lt;/message&gt;
+  &lt;/messages&gt;
+&lt;/mavlink&gt;
+</code></pre>
+
+<h3 id="xml-definitions">XML Definitions</h3>
+<ul>
+<li><code>&lt;message&gt;&lt;/message&gt;</code> : Encapsulates one message</li>
+<li><code>id=“190”</code> : Index number of the message. In general, id 150-240 is reserved for custom messages </li>
+<li><code>&lt;description&gt;&lt;/description&gt;</code> : Describes the message, and will be converted into comments during C/C++ code generation</li>
+<li><code>&lt;field&gt;&lt;/field&gt;</code> : Encodes one field of the message</li>
+<li><code>type=“float”</code> Defines data type of the field</li>
+</ul>
+<h3 id="compiling-xml-to-cc">Compiling XML to C/C++</h3>
+<p>The message definition is compiled into C/C++ code for use by the autopilot by a python script <code>mavgenerate.py</code>. This script is part of the <a href="https://github.com/mavlink/mavlink">Mavlink Repository</a>. Clone the repo and run <code>python mavgenerate.py</code> to bring up a GUI for configuring code generation.</p>
+<p><img alt="" src="https://api.ning.com/files/UNdbGkqHoSpJdWrdaMY6xWZObJANncpmH32UDK8R*BaXZbqZwgtPzm93MiOAJMj0ZJ7Gl0*NtjFXJn0bygusiIXQ1V2r644q/Mavlinkgenerator.png" /></p>
+<ul>
+<li>XML: .xml file of message definition</li>
+<li>Out: Output directory, generally set to be <code>mavlink/include/mavlink/v2.0</code>. Code generation will create a new folder in this directory to contain the message headers. </li>
+<li>Language: Use C++11 for PX4 Firmware and QGroundControl mavlink libraty</li>
+<li>Validate/Validate Units: Manually check your .xml definition, and omit validation to avoid getting spurious errors</li>
+</ul>
+<h2 id="sending-custom-mavlink-messages">Sending custom MAVLink messages</h2>
+<p>Sending and receiving MAVLink messages is mostly handled in the various C/C++ files in <code>src/modules/mavlink</code>. </p>
+<p>A class for the message should be created in <code>mavlink_messages.cpp</code>. First, add the headers of the uORB and mavlink messages.</p>
+<pre><code class="c++">#include &lt;uORB/topics/pot_angle.h&gt;
+#include &lt;v2.0/custom_msgs/mavlink_msg_pot_angle.h&gt;
+</code></pre>
+
+<p>Then create the class</p>
+<pre><code class="c++">class MavlinkStreamPotAngle : public MavlinkStream
+{
+public:
+    const char *get_name() const
+    {
+        return MavlinkStreamPotAngle::get_name_static();
+    }
+    static const char *get_name_static()
+    {
+        return &quot;POT_ANGLE&quot;;
+    }
+    static uint16_t get_id_static()
+    {
+        return MAVLINK_MSG_ID_POT_ANGLE;
+    }
+    uint16_t get_id()
+    {
+        return get_id_static();
+    }
+    static MavlinkStream *new_instance(Mavlink *mavlink)
+    {
+        return new MavlinkStreamPotAngle(mavlink);
+    }
+    unsigned get_size()
+    {
+        return MAVLINK_MSG_ID_POT_ANGLE_LEN + MAVLINK_NUM_NON_PAYLOAD_BYTES;
+    }
+
+private:
+    MavlinkOrbSubscription *_sub;
+    uint64_t _pot_time;
+
+    /* do not allow top copying this class */
+    MavlinkStreamPotAngle(MavlinkStreamPotAngle &amp;);
+    MavlinkStreamPotAngle&amp; operator = (const MavlinkStreamPotAngle &amp;);
+
+protected:
+    explicit MavlinkStreamPotAngle(Mavlink *mavlink) : MavlinkStream(mavlink),
+        _sub(_mavlink-&gt;add_orb_subscription(ORB_ID(pot_angle))),  // make sure you enter the name of your uORB topic here
+        _pot_time(0)
+    {}
+
+    bool send(const hrt_abstime t)
+    {
+        pot_angle_s _pot_angle;
+
+        if (_sub-&gt;update(&amp;_pot_time, &amp;_pot_angle)) {
+            mavlink_pot_angle_t msg = {};  //make sure mavlink_pot_angle_t is the definition of your custom MAVLink message
+
+            msg.error_count = _pot_angle.error_count;
+            msg.pot_ADCraw = _pot_angle.pot_ADCraw;
+            msg.pot_angle_deg_raw  = _pot_angle.pot_angle_deg_raw;
+            msg.pot_angle_deg = _pot_angle.pot_angle_deg;
+            msg.pot_angle_rad = _pot_angle.pot_angle_rad;
+            msg.pot_rate_deg_raw = _pot_angle.pot_rate_deg_raw;
+            msg.pot_rate_deg = _pot_angle.pot_rate_deg;
+            msg.pot_rate_rad = _pot_angle.pot_rate_rad;
+            msg.pot_dt = _pot_angle.pot_dt;
+
+            mavlink_msg_pot_angle_send_struct(_mavlink-&gt;get_channel(), &amp;msg);
+
+            return true;
+        }
+
+        return false;
+    }
+};
+</code></pre>
+
+<p>Finally append the stream class to the <code>streams_list</code> at the bottom of the code.</p>
+<pre><code class="c++">static const StreamListItem streams_list[] = {
+
+StreamListItem(&amp;MavlinkStreamPotAngle::new_instance, &amp;MavlinkStreamPotAngle::get_name_static, 
+&amp;MavlinkStreamPotAngle::get_id_static),
+
+}
+</code></pre>
+
+<h2 id="enabling-the-mavlink-stream">Enabling the MAVLink stream</h2>
+<p>To enable the MAVLink stream, edit <code>mavlink_main.cpp</code> and add relevant messages to <code>configure_streams_to_default</code>. </p>
+<p>First include the MAVLink message header in <code>mavlink_main.h</code></p>
+<pre><code class="c++">#include &lt;v2.0/custom_msgs/mavlink_msg_pot_angle.h&gt;
+</code></pre>
+
+<p>Then append the configure function to each case matching a MAVLink mode in which the MAVLink stream should be enabled</p>
+<pre><code class="c++">case MAVLINK_MODE_NORMAL:
+
+    configure_stream_local(&quot;POT_ANGLE&quot;, 10.0f);
+
+    break;
+</code></pre>
+
+<p>Alternately, add a line to the startup script <code>extras.txt</code> on the SD card to enable the streaming.</p>
+<blockquote>
+<p>mavlink stream -r 50 -s POT_ANGLE -d /dev/ttyACM0</p>
+</blockquote>
+<p>Parameters are <code>-r</code>, <code>-s</code> and <code>-d</code>, which configures the data rate, MAVLink message, and serial port of the stream.</p>
+<h2 id="reading-the-mavlink-stream">Reading the MAVLink Stream</h2>
+<p>To read the MAVLink Stream, QGroundControl should be rebuilt with the custom MAVLink message headers. This simply entails repeating the steps in the above section <strong>Creating custom MAVLink message</strong> in <code>qgroundcontrol/libs/mavlink/include/mavlink/v2.0</code></p>
+<p><em>MAVLink is a submodule in QGroundControl firmware too</em></p>
+<p>The composition of the .xml message definition becomes important here. </p>
+<pre><code class="c++">  &lt;include&gt;common.xml&lt;/include&gt;
+  &lt;include&gt;ardupilotmega.xml&lt;/include&gt;
+</code></pre>
+
+<p>Both <code>common.xml</code> and <code>ardupilotmega.xml</code> definitions must be included. The latter is a superset of all MAVLink messages and has an include line for <code>common.xml</code> within it. However, C++ code generation omits nested includes. Hence, both .xml files must be included, and omission of either will break the build.</p>
+<h3 id="configuring-qgroundcontrol-build">Configuring QGroundControl build</h3>
+<p>Add a file <code>user_config.pri</code> in the QGroundControl base directory and enter the following line.</p>
+<pre><code class="qml">MAVLINK_CONF = custom_msgs
+</code></pre>
+
+<p>This will tell QGroundControl to build the customized MAVLink library. </p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../log_dev/" class="btn btn-neutral" title="Logging and log analysis"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../log_dev/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Vehicles and Airframes - AERO internal documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Vehicles and Airframes";
+    var mkdocs_page_input_path = "ref/airframe_ref.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> AERO internal documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Basic Setup</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../wiring_ref/">Wiring quickstart</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">PX4 Reference Info</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Vehicles and Airframes</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#airframe">Airframe</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#multicopters">Multicopters</a></li>
+        
+            <li><a class="toctree-l4" href="#vtols">VTOLs</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../autopilot_ref/">Autopilot Hardware</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../sensor_ref/">Sensors</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Software Dev</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../dev/log_dev/">Logging and log analysis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../dev/mavlink_dev/">Mavlink Development</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">AERO internal documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>PX4 Reference Info &raquo;</li>
+        
+      
+    
+    <li>Vehicles and Airframes</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="airframe">Airframe</h1>
+<p>Unmanned Air Vehicles (UAVs) is a broad term that encompass a wide variety of aircraft. In practice, UAVs are commonly grouped in three classes</p>
+<ul>
+<li>
+<p>Multicopters: Versatile, manoeuvrable, and capable of precise hovering, but limited in endurance or range</p>
+</li>
+<li>
+<p>Fixed-Wings: Traditional planes are very efficient, and can easily achieve high speed or long distance flight</p>
+</li>
+<li>
+<p>VTOLs: Vertical-Takeoff-Or-Landing aircraft combines the benefits of fixed-wing planes and multicopters</p>
+</li>
+</ul>
+<p><img alt="Airframe Screen" src="../../img/airframes.png" />
+<em>QGroundControl airframe selection screen</em></p>
+<p>Understanding different types of UAVs helps you choose/design an aircraft for the intended application. Once you have prepared your aircraft, the PX4 firmware must be matched to it in order to control it</p>
+<h2 id="multicopters">Multicopters</h2>
+<p>Multicopters use multiple motors driving propellers to achieve lift. They manoeuvre in the air by adjusting motor speeds, i.e. motor differentials. </p>
+<h3 id="tricopter">Tricopter</h3>
+<p>The Tricopter has 3 motors and a servo to tilt the axial motor to counteract a net motor torque imbalance.</p>
+<p><img src="../img/YMinus.svg" width="100"></p>
+<ul>
+<li>Tricopters were popular earlier, when motors were unreliable</li>
+<li>Performance is limited, and may not scale well to larger sizes</li>
+<li>Due to their use of a servo, they are difficult to setup and maintain.</li>
+</ul>
+<h3 id="quadcopter">Quadcopter</h3>
+<p>The quadcopter uses 4 motors</p>
+<p><img src="../img/QuadRotorX.svg" width="100"></p>
+<ul>
+<li>Symmetric geometry makes for simple flight dynamics.</li>
+<li>Suitable for a wide range of applications, as they can be scaled up to larger sizes, and can carry diverse payloads</li>
+<li>Primary drawback is a lack of redundancy: Failure of even one single motor will cause total loss of control. </li>
+</ul>
+<h4 id="quadcopter-configurations-and-designations">Quadcopter configurations and designations</h4>
+<p><img src="../img/QuadRotorPlus.svg" width="100">    <img src="../img/QuadRotorWide.svg" width="100">    <img src="../img/QuadRotorH.svg" width="100"></p>
+<ul>
+<li>
+<p>Quadcopter X: Frame arms linked at the center of the airframe in X-shape. Most common configuration</p>
+</li>
+<li>
+<p>Quadcopter +: Frame arms are aligned to the body axes, such that four arms form a plus shape. Unpopular because the front motor blocks forward looking cameras. </p>
+</li>
+<li>
+<p>Quadcopter Wide: Based on Quadcopter X, with front arms spread apart to give a wide field of view to a forward looking camera.</p>
+</li>
+<li>
+<p>Quadcopter H: Based on Quadcopter X, with frame arms built from single horizontal booms. Robust configuration that is especially easy to construct with basic craftsmanship.</p>
+</li>
+</ul>
+<h3 id="hexacopter-and-octocopter">Hexacopter and Octocopter</h3>
+<p>The hexacopter uses six motors, while the octocopter uses eight.</p>
+<p><img src="../img/HexaRotorX.svg" width="100">   <img src="../img/OctoRotorX.svg" width="100"></p>
+<ul>
+<li>Stable heavy-lifter configuration, widely used for aerial photography and agricultural applications</li>
+<li>Motor redundancy allows vehicle to remain airborne after one motor is disabled</li>
+<li>Primary drawback is inefficiency: Not suitable for long-range or high-speed applications</li>
+</ul>
+<h3 id="hexaoctocopter-coaxial-y6-and-x8">Hexa/Octocopter Coaxial (Y6 and X8)</h3>
+<p><img src="../img/Y6B.svg" width="100">  <img src="../img/OctoRotorXCoaxial.svg" width="100"></p>
+<p>Variations on the hexacopter and octocopter respectively, mounting two motors co-axially on each frame arm in a contra-rotating configuration. (e.g. upper motor CCW, lower motor CW)</p>
+<ul>
+<li>Very stable and geometrically compact configuration that makes for mechanical simplicity and high payload capacity</li>
+<li>Primary drawback is inefficiency: Approx. 10% penalty in propulsive efficiency compared to a hexacopter or octocopter.</li>
+</ul>
+<h2 id="vtols">VTOLs</h2>
+<p>VTOL aircraft usually combine a multicopter configuration with wings to achieve Vertical-Takeoff-Or-Landing while retaining the efficiency of fixed-wings. </p>
+<p><img src="../img/Tiltrotorflight.png" width="200"></p>
+<h3 id="tailsitter">Tailsitter</h3>
+<p>The tailsitter mounts two tractor motors on a flying wing. In fixed-wing mode, they fly like a simple twin-engine plane. In multicopter mode, the flying wing is oriented vertically, such that the motors thrust up for lift, and the wing ailerons redirect slipstream air for lateral control. </p>
+<p><img src="../img/VTOLDuoRotorTailSitter.svg" width="100"></p>
+<ul>
+<li>Mechanically simplest way to achieve Vertical-Takeoff-Or-Landing.</li>
+<li>Primary drawback is unwieldiness: They take off nose vertically up but flies level, making payload mounting very complicated</li>
+</ul>
+<h3 id="tiltrotor">Tiltrotor</h3>
+<p>The tiltrotor mounts two motors that can tilt up, plus one tail motor to provide stabilization during the motor-tilting process. Short wings provide lift during forward-flight.</p>
+<p><img src="../img/VTOLTiltRotor.svg" width="100"></p>
+<ul>
+<li>Efficient and versatile VTOL configuration that combines many valuable features of multicopters and planes</li>
+<li>Primary drawback is unreliability: The tiltrotor mechanism is complex, and the VTOL transition, during which the motor tilts, is hard to control</li>
+</ul>
+<h3 id="quadplane">Quadplane</h3>
+<p>The quadplane mounts four motors in a Quadcopter X configurations to a fixed wing plane, which also has a motor for propulsion</p>
+<p><img src="../img/VTOLPlane.svg" width="100"></p>
+<ul>
+<li>Most reliable VTOL configuration that uses no moving actuators or changing vehicle orientation in flight.</li>
+<li>Primary drawback is inefficiency: quadcopter motors are useless in fixed-wing mode, and plane motor is useless in multicopter mode</li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../autopilot_ref/" class="btn btn-neutral float-right" title="Autopilot Hardware">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../wiring_ref/" class="btn btn-neutral" title="Wiring quickstart"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../wiring_ref/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../autopilot_ref/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

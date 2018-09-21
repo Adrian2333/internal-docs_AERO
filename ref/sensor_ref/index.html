@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Sensors - AERO internal documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Sensors";
+    var mkdocs_page_input_path = "ref/sensor_ref.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> AERO internal documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Basic Setup</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../wiring_ref/">Wiring quickstart</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">PX4 Reference Info</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../airframe_ref/">Vehicles and Airframes</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../autopilot_ref/">Autopilot Hardware</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Sensors</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#sensors">Sensors</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#core-sensors">Core Sensors</a></li>
+        
+            <li><a class="toctree-l4" href="#advancedexternal-sensors">Advanced/External Sensors</a></li>
+        
+            <li><a class="toctree-l4" href="#optional-sensors">Optional Sensors</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Software Dev</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../dev/log_dev/">Logging and log analysis</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../dev/mavlink_dev/">Mavlink Development</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">AERO internal documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>PX4 Reference Info &raquo;</li>
+        
+      
+    
+    <li>Sensors</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="sensors">Sensors</h1>
+<p>A flight control system uses sensors to obtain information on vehicle state in order to perform its primary functions of stabilization and/or navigation. The vehicle states include:</p>
+<ul>
+<li>Attitude</li>
+<li>Body rotation rates</li>
+<li>Position</li>
+<li>Heading</li>
+<li>Altitude</li>
+<li>Speed / Airspeed</li>
+</ul>
+<p>The flight control system minimally requires an inertial measurement unit (IMU) to for stable flight. Secondly, a compass and a barometer is required to enable some assisted modes. Lastly, a GPS is required to enable fully autonomous modes.</p>
+<h2 id="core-sensors">Core Sensors</h2>
+<h3 id="imu">IMU</h3>
+<p>The IMU consists of a gyroscope and an accelerometer. This is the most important sensor integral in every autopilot. It measures the vehicle’s angular rates and attitude, and enables the autopilot to perform basic flight stabilization.</p>
+<p><img alt="MPU6000: Commonly used IMU chip known for ruggedness" src="/img/sensors/MPU.png" /></p>
+<h3 id="compass">Compass</h3>
+<p>The compass / magnetometer measures the vehicle’s heading relative to the earth. It enables the autopilot to control vehicle heading during autonomous navigation.</p>
+<p><img alt="HMC5883L: Very reliable and widely-used compass chip, but recently deprecated" src="/img/sensors/HMC.png" /></p>
+<p><strong>Warning: The compass is sensitive to electromagnetic interference (EMI). It must be calibrated carefully to avoid poor performance in auto-modes!</strong></p>
+<h3 id="barometer">Barometer</h3>
+<p>The barometer measures the vehicle's elevation. It enables the autopilot to control vehicle altitude during altitude-hold mode or autonomous navigation.</p>
+<p><img alt="MS5611: Notable high-precision barometer chip" src="/img/sensors/MS.png" /></p>
+<p><strong>Warning: The barometer is sensitive to pressure change unrelated to elevation change (wind gusts) and changing of lighting conditions. It must be shielded by foam to prevent vehicle climbing and falling unpredictably.</strong></p>
+<h2 id="advancedexternal-sensors">Advanced/External Sensors</h2>
+<h3 id="gps">GPS</h3>
+<p>The GPS enables the autopilot to sense the vehicle’s geographic location, i.e. position estimation. It is necessary for holding a fixed vehicle position and navigation in automatic flight modes.</p>
+<p><img alt="mRo M8N GPS" src="/img/sensors/GPS.png" /></p>
+<p><em>Additional information: Main components in a GPS module include the ceramic antenna, the GPS chip, and a compass chip which serves as an external compass</em></p>
+<p><strong>Warning: It is strongly advised to mount the GPS module above the UAV on a tall mast. This isolates the GPS chip and the compass chip from electromagnetic interference (EMI) and improves navigation performance</strong></p>
+<h3 id="airspeed-sensor-pitot-tube">Airspeed Sensor (Pitot tube)</h3>
+<p>Airspeed sensor measures the speed of a fixed-wing aircraft relative to surrounding airflow, as opposed to speed measured relative to the ground. It is necessary for all fixed-wing aircraft to maintain lift (and avoid stalling)</p>
+<p><img alt="Airspeed sensor and pitot tube" src="/img/sensors/AIRSPD.png" /></p>
+<h2 id="optional-sensors">Optional Sensors</h2>
+<h3 id="rangefinder">Rangefinder</h3>
+<p>Sonar / LIDAR rangefinders provide distance measurements. It enables very precise altitude control (error in the order of cm), terrain-following, or collision avoidance.</p>
+<p><img alt="LIDAR-lite" src="/img/sensors/LIDAR.png" /></p>
+<p><em>Sonar rangefinders have very limited range, using LIDAR is recommended.</em></p>
+<h3 id="optical-flow">Optical Flow</h3>
+<p>Optical flow uses a downward facing camera for position recognition. It enables position estimation without using GPS, or in a GPS-deprived environment, i.e. indoors / poor weather.</p>
+<p><img alt="PX4FLow" src="/img/sensors/OpFlow.png" /></p>
+<p><em>Optical flow sensors must be used together with a rangefinder.</em></p>
+<h3 id="rtk-gps">RTK GPS</h3>
+<p>RTK GPS relies on a 'Base GPS' on the ground to send real-time position correction to a 'Rover GPS' in the air to realize very precise position estimation (error in the order of 10cms)</p>
+<p><img alt="RTK_GPS" src="/img/sensors/RTKGPS.png" /></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../dev/log_dev/" class="btn btn-neutral float-right" title="Logging and log analysis">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../autopilot_ref/" class="btn btn-neutral" title="Autopilot Hardware"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../autopilot_ref/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../../dev/log_dev/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
