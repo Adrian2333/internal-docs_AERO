@@ -1,4 +1,4 @@
-# Autopilot Hardware Reference
+# Autopilot Hardware
 
 Pixhawk series autopilots all run PX4 or ArduPilot firmware, but the hardware differ in interfaces and form factor. This section summarizes the available autopilot hardware and groups them into three categories.
 
